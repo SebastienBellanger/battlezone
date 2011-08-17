@@ -1,22 +1,28 @@
 class Vector3
-  constructor: (@x, @y, @z) ->
+  @UNITX = new Vector3(1, 0, 0)
+  @UNITY = new Vector3(0, 1, 0)
+  @UNITZ = new Vector3(0, 0, 1)
 
-  add: (vector) ->
+  constructor: (@x, @y, @z) ->
+  
+  set: (@x, @y, @z) ->
+
+  addThis: (vector) ->
     @x += vector.x;
     @y += vector.y;
     @z += vector.z;
     
-  sub: (vector) ->
+  subThis: (vector) ->
     @x -= vector.x;
     @y -= vector.y;
     @z -= vector.z;
     
-  mul: (scalar) ->
+  mulThis: (scalar) ->
     @x *= scalar;
     @y *= scalar;
     @z *= scalar;
     
-  div: (scalar) ->
+  divThis: (scalar) ->
     @x /= scalar;
     @y /= scalar;
     @z /= scalar;
@@ -27,13 +33,13 @@ class Vector3
   length: ->
     return Math.sqrt( lengthSquared() );
     
-  normalize: ->
+  normalizeThis: ->
     lengthInv = 1.0 / length();
-    mul(lengthInv);
+    @mulThis(lengthInv);
     
-  getNormalized: ->
+  normalize: ->
     vector = new Vector3(@x, @y, @z);
-    return vector.normalize();
+    return vector.normalizeThis();
     
   dot: (vector) ->
     return @x * vector.x + @y * vector.y + @z * vectory.z;

@@ -1,13 +1,8 @@
 <html> 
 <head> 
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
-	<title>Battlezone</title>
-
-    <link href="http://fonts.googleapis.com/css?family=Ubuntu&v2" rel="stylesheet" type='text/css'>
-
-    <script src="public/lib/math.js" type="text/javascript"></script>
-    <script src="public/lib/game.js" type="text/javascript"></script>
-
+	<title>BattleZone</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript"></script>
 	<style type="text/css">
         body, html {
             overflow: hidden;
@@ -34,7 +29,7 @@
         #menu {
             display: none;
             position: absolute;
-            width: 500px;
+            width: 800px;
             top: 25%;
             text-align:center;
             margin: 5px;
@@ -51,23 +46,23 @@
         }
         #game {
             position: absolute;
-            width: 500px;
+            width: 800px;
             height: 600px;
             left: 50%;
             top: 50%;
-            margin-left: -250px;
+            margin-left: -400px;
             margin-top: -300px;
         }
         #board {
             border: 5px solid #555555;
             border-radius: 3px;
-            width: 500px;
+            width: 800px;
             height: 500px;
         }
         #modal {
             display: none;
             position: absolute;
-            width: 500px;
+            width: 800px;
             top: 45%;
             text-align:center;
             margin: 5px;
@@ -75,7 +70,7 @@
         #progress {
             display: none;
             position: absolute;
-            width: 500px;
+            width: 800px;
             top: 45%;
             text-align:center;
             margin: 5px;
@@ -83,9 +78,34 @@
         
     </style>
 </head>
-<body style="margin: 5px; overflow: hidden" onLoad="new BattleZone();">
-  <span id="output"></span>
-    
+<body style="margin: 5px; overflow: hidden">
+    <div id="game">
+        <div id="header">
+            <span id="title">BattleZone</span>
+            <span id="version"></span>
+            <span id="score">Score: 0</span>
+        </div>
+        <div id="modal">
+        </div>
+        <div id="progress">
+        </div>
+        <div id="menu">
+            <ul>
+                <li id="startsingle">Start single player game</li>
+                <li id="joinmulti">Join multiplayer game</li>
+                <li id="createmulti">Create multiplayer game</li>
+            </ul>
+        </div>
+        <div id="board">
+	        <canvas id="canvas" width=800 height=500></canvas>
+        </div>
+        <div id="footer">
+            <div id="users"></div>
+            <div id="gameswaiting"></div>
+            <div id="gamesinprogress"></div>
+        </div>
+    </div>
+    <script src="lib/battlezone.js" type="text/javascript"></script>
 </body>
 </html>
 

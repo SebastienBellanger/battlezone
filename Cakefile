@@ -1,36 +1,45 @@
 fs     = require 'fs'
 {exec} = require 'child_process'
 
-appFolders = [
-  'math'
-  'game'
+appFiles  = [
+  'math/Vector3'
+  'math/Vector4'
+  'math/Matrix3'
+  'math/Matrix4'
+  'math/Quaternion'
+  'math/Transform'
+  'renderer/Model'
+  'renderer/Projection'
+  'renderer/Pipeline'
+  'renderer/Renderer'
+  'game/BattleZone'
 ]
 
-outputDir = "public/lib/"
-
-String::endsWith = (str) -> if @match(new RegExp "#{str}$") then true else false
-
-task 'build', 'build the project', ->
-
-  process = (libFolder, libContents) ->
-    outputFile = "#{outputDir}#{libFolder}.coffee"
-    fs.writeFile outputFile, libContents.join('\n\n'), 'utf8', (err) ->
-      throw err if err
-      exec "coffee -c -b #{outputFile}", (err, stdout, stderr) ->
-        throw err if err
+task 'build', 'Build single application file from source files', ->
+  appContents = new Array remaining = appFiles.length
+  for file, index in appFiles then do (file, index) ->
+    fs.readFile "src/#{file}.coffee", 'utf8', (err, fileContents) ->
+      if err
+        console.log "Error reading #{file}"
+        throw err
+      appContents[index] = fileContents
+      process() if --remaining is 0
+  process = ->
+    fs.writeFile 'lib/battlezone.coffee', appContents.join('\n\n'), 'utf8', (err) ->
+      if err
+        console.log "Error while writing lib/battlezone.coffe"
+        throw err
+      exec 'coffee --compile lib/battlezone.coffee', (err, stdout, stderr) ->
+        if err
+          console.log "Error while compiling lib/battlezone.coffee"
+          throw err
         console.log stdout + stderr
-        fs.unlink outputFile, (err) ->
+        fs.unlink 'lib/battlezone.coffee', (err) ->
           throw err if err
-          console.log "Built library #{libFolder}"
+          console.log 'Done.'
 
-  for libFolder in appFolders then do (libFolder) ->
-    libPath = "src/#{libFolder}/"
-    libContents = new Array
-    files = fs.readdirSync libPath
-    for file, index in files then do (file, index) ->
-      if file.endsWith(".coffee")
-        fileContents = fs.readFileSync "#{libPath}#{file}", 'utf8'
-        libContents[index] = fileContents
-    process(libFolder, libContents)
- 
-       
+task 'minify', 'Minify the resulting application file after build', ->
+  exec 'java -jar "compiler.jar" --js lib/battlezone.js --js_output_file lib/battlezone-min.js', (err, stdout, stderr) ->
+    throw err if err
+    console.log stdout + stderr
+
