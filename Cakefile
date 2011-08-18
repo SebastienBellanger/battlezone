@@ -12,6 +12,7 @@ appFiles  = [
   'renderer/Projection'
   'renderer/Pipeline'
   'renderer/Renderer'
+  'game/Tank'
   'game/BattleZone'
 ]
 

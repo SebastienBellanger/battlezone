@@ -1,4 +1,10 @@
 class Renderer
+  @RED = '#F00'
+  @GREEN = '#0F0'
+  @BLUE = '#00F'
+  @WHITE = '#FFF'
+  @BLACK = '#000'
+
   constructor: ->
     @canvas = $('#canvas')
     @context = @canvas.get(0).getContext '2d'
@@ -6,9 +12,9 @@ class Renderer
     @context.lineWidth = 1;
     @context.lineCap = "butt"    
         
-    projection = new Projection(@canvas.width(), @canvas.height(), 0.1, 1000, 60.0);
+    projection = new Projection(@canvas.width(), @canvas.height(), 0.1, 1000, 75.0);
     viewMatrix = new Matrix4()
-    viewMatrix.translate(0, 0, -50)
+    viewMatrix.translate(0, -7, -20)
     
     width = @canvas.width()
     height = @canvas.height()
@@ -19,7 +25,7 @@ class Renderer
     viewportMatrix = new Matrix3()
     viewportMatrix.set( 
       halfWidth, 0,  0
-      0, halfHeight, 0,
+      0, -halfHeight, 0,
       halfWidth, halfHeight, 1
     )
     
@@ -32,12 +38,14 @@ class Renderer
     @context.clearRect(0,0, @canvas.width(), @canvas.height())  
     
   drawPixel: (x, y, color) ->
+    @context.save()
     @context.fillStyle = color
-    @context.fillRect(x,y,1,1)  
+    @context.fillRect(x-1,y-1,3,3)  
+    @context.restore()
   
   drawText: (x, y, string, color) ->
     @context.save()
-    if not color? then color = "rgb(255,0,0)"
+    if not color? then color = Renderer.WHITE
     @context.fillStyle = color
     @context.fillText string, x, y
     @context.restore()

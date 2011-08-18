@@ -1,8 +1,17 @@
 class BattleZone
   constructor: ->
     @renderer = new Renderer()
-    @model = new Model()
+    @axisModel = new AxisModel()
     
+    @tankArray = new Array()
+    for i in [0...10]
+      tank = new Tank()
+      tank.transform.translateX( Math.floor( Math.random() * 200 ) - 100 )
+      tank.transform.translateZ( -Math.floor( Math.random() * 200 ) )
+      tank.transform.rotateY( Math.random() * Math.PI )
+      @tankArray.push tank
+    @tankArray.push new Tank()
+        
     @moveUp = false
     @moveDown = false
     @moveLeft = false
@@ -39,32 +48,44 @@ class BattleZone
           
   update: =>
     now = new Date().getTime()
-    elapsed = now - @last
+    step = now - @last
     @last = now
     
     moveX = 0
     moveY = 0
     moveZ = 0
     
-    if @moveLeft then moveX += elapsed * 0.05
-    if @moveRight then moveX -= elapsed * 0.05
-    if @moveUp then moveY += elapsed * 0.05
-    if @moveDown then moveY -= elapsed * 0.05
-    if @moveIn then moveZ += elapsed * 0.05
-    if @moveOut then moveZ -= elapsed * 0.05
-    
-    @model.transform.rotateY( elapsed * 0.001 )
-    @model.transform.rotateX( elapsed * 0.002 )
-       
+    if @moveLeft then moveX += step * 0.02
+    if @moveRight then moveX -= step * 0.02
+    if @moveUp then moveY -= step * 0.02
+    if @moveDown then moveY += step * 0.02
+    if @moveIn then moveZ += step * 0.02
+    if @moveOut then moveZ -= step * 0.02
+           
     @renderer.clear()
+    
     
     @renderer.pipeline.viewMatrix.translate(moveX, moveY, moveZ)
     @renderer.pipeline.recalculateTransform()
      
-    @model.render @renderer
-    
+    #@axisModel.render @renderer 
+    for tank in @tankArray
+      do (tank) =>
+        tank.update step
+        tank.transform.rotateY( step * 0.0001 )
+        tank.render @renderer    
+      
     return true
 
+class AxisModel extends Model
+  constructor: ->
+    super
+    @renderMode = "lines"
+    @addVertex new Vector3(0,0,0)
+    @addVertex new Vector3(1,0,0)
+    @addVertex new Vector3(0, 1, 0)
+    @addVertex new Vector3(0, 0, -1)
+    @indices = [0,1,0,2,0,3]
     
 new BattleZone()
     
