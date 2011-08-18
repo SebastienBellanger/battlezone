@@ -19,7 +19,7 @@ class Tank
 class TankRadarModel extends Model
   constructor: ->
     super
-    @color = Renderer.GREEN
+    @color = Renderer.RED
     @renderMode = "lines"
     
     @addVertex(new Vector3(0,0,0))

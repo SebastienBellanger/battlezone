@@ -87,5 +87,5 @@ class AxisModel extends Model
     @addVertex new Vector3(0, 0, -1)
     @indices = [0,1,0,2,0,3]
     
-new BattleZone()
+#new BattleZone()
     

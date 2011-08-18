@@ -12,7 +12,7 @@ class Renderer
     @context.lineWidth = 1;
     @context.lineCap = "butt"    
         
-    projection = new Projection(@canvas.width(), @canvas.height(), 0.1, 1000, 75.0);
+    projection = new Projection(@canvas.width(), @canvas.height(), 0.1, 1000, 65.0);
     viewMatrix = new Matrix4()
     viewMatrix.translate(0, -7, -20)
     
