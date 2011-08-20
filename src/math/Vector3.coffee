@@ -6,26 +6,51 @@ class Vector3
   constructor: (@x, @y, @z) ->
   
   set: (@x, @y, @z) ->
+  
+  setV: (vector) ->
+    @x = vector.x
+    @y = vector.y
+    @z = vector.z
+
+  add: (vector) ->
+    return new Vector3( @x + vector.x, @y + vector.y, @z + vector.z )
 
   addThis: (vector) ->
     @x += vector.x;
     @y += vector.y;
     @z += vector.z;
     
+  sub: (vector) ->
+    return new Vector3( @x - vector.x, @y - vector.y, @z - vector.z )
+    
   subThis: (vector) ->
     @x -= vector.x;
     @y -= vector.y;
     @z -= vector.z;
     
+  mul: (scalar) ->
+    return new Vector3( @x * scalar, @y * scalar, @z * scalar )
+    
   mulThis: (scalar) ->
     @x *= scalar;
     @y *= scalar;
     @z *= scalar;
+
+  div: (scalar) ->
+    return new Vector3( @x / scalar, @y / scalar, @z / scalar )
     
   divThis: (scalar) ->
     @x /= scalar;
     @y /= scalar;
     @z /= scalar;
+    
+  negate: ->
+    return new Vector3( -@x, -@y, -@z )
+    
+  negateThis: ->
+    @x = -@x
+    @y = -@y
+    @z = -@z
     
   lengthSquared: ->
     return dot(this);

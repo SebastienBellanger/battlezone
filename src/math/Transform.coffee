@@ -26,7 +26,7 @@ class Transform
     @translation.z += scalar
  
   setTranslation: (vector3) ->
-    @translation = vector3
+    @translation.setV(vector3)
         
   setTranslationX: (scalar) ->
     @translation.x = scalar

@@ -15,14 +15,11 @@ class Projection
     
   getMatrix: ->
     if @matrixUpdated
-      aspect = @viewWidth / @viewHeight
-      height = Math.tan( @fov * Math.PI / 360.0 ) * @near
-      width = height * aspect
-      
       # Projection for a symetric view volume
+      aspect = @viewHeight / @viewWidth
       farNearInv = 1.0 / (@far - @near)
-      A = @near / width
-      F = @near / height
+      A = 1.0 / Math.tan( 0.5 * @fov * Math.PI / 360.0 )
+      F = A / aspect
       K = -(@far + @near) * farNearInv
       L = -2.0 * @far * @near * farNearInv
       

@@ -3,21 +3,24 @@ class BattleZone
     @renderer = new Renderer()
     @axisModel = new AxisModel()
     
-    @tankArray = new Array()
+    @scene = new Array()
     for i in [0...10]
       tank = new Tank()
       tank.transform.translateX( Math.floor( Math.random() * 200 ) - 100 )
       tank.transform.translateZ( -Math.floor( Math.random() * 200 ) )
       tank.transform.rotateY( Math.random() * Math.PI )
-      @tankArray.push tank
-    @tankArray.push new Tank()
+      @scene.push tank
+    @scene.push new Tank()    
+ 
+    @position = new Vector3(0, 5, 30)
         
-    @moveUp = false
-    @moveDown = false
+    @moveForward = false
+    @moveBackward = false
     @moveLeft = false
     @moveRight = false
-    @moveIn = false
-    @moveOut = false
+    @moveUp = false
+    @moveDown = false
+    @shoot = false;
     
     $(document).bind 'keydown', @onKeyDown
     $(document).bind 'keyup', @onKeyUp
@@ -31,49 +34,54 @@ class BattleZone
     switch key.keyCode
       when 37 then @moveLeft = false
       when 39 then @moveRight = false
-      when 38 then @moveUp = false
-      when 40 then @moveDown = false
-      when 65 then @moveIn = false
-      when 90 then @moveOut = false
+      when 38 then @moveForward = false
+      when 40 then @moveBackward = false
+      when 65 then @moveUp = false
+      when 90 then @moveDown = false
+      when 32 then @shoot = false
   
   onKeyDown: (key) =>
     key.preventDefault()  
     switch key.keyCode
       when 37 then @moveLeft = true
       when 39 then @moveRight = true
-      when 38 then @moveUp = true
-      when 40 then @moveDown = true   
-      when 65 then @moveIn = true
-      when 90 then @moveOut = true
+      when 38 then @moveForward = true
+      when 40 then @moveBackward = true   
+      when 65 then @moveUp = true
+      when 90 then @moveDown = true
+      when 32 then @shoot = true
           
   update: =>
     now = new Date().getTime()
     step = now - @last
     @last = now
     
-    moveX = 0
-    moveY = 0
-    moveZ = 0
-    
-    if @moveLeft then moveX += step * 0.02
-    if @moveRight then moveX -= step * 0.02
-    if @moveUp then moveY -= step * 0.02
-    if @moveDown then moveY += step * 0.02
-    if @moveIn then moveZ += step * 0.02
-    if @moveOut then moveZ -= step * 0.02
+    if @moveLeft then @position.addThis Vector3.UNITX.mul -step * 0.02
+    if @moveRight then @position.addThis Vector3.UNITX.mul step * 0.02
+    if @moveForward then @position.addThis Vector3.UNITZ.mul -step * 0.02
+    if @moveBackward then @position.addThis Vector3.UNITZ.mul step * 0.02
+    if @moveUp then @position.addThis Vector3.UNITY.mul step * 0.02
+    if @moveDown then @position.addThis Vector3.UNITY.mul -step * 0.02
+    if @shoot
+      bullet = new Bullet()
+      bullet.transform.setTranslation(@position)
+      @scene.push bullet
+      @shoot = false
+      
            
     @renderer.clear()
     
+    #@renderer.drawText( 10, 100, @position.negate() )
     
-    @renderer.pipeline.viewMatrix.translate(moveX, moveY, moveZ)
+    @renderer.pipeline.viewMatrix.setTranslationV( @position.negate() )
     @renderer.pipeline.recalculateTransform()
      
     #@axisModel.render @renderer 
-    for tank in @tankArray
-      do (tank) =>
-        tank.update step
-        tank.transform.rotateY( step * 0.0001 )
-        tank.render @renderer    
+    for sceneObject in @scene
+      do (sceneObject) =>
+        sceneObject.update step
+        #sceneObject.transform.RotateY step * 0.022
+        sceneObject.render @renderer    
       
     return true
 
@@ -87,5 +95,17 @@ class AxisModel extends Model
     @addVertex new Vector3(0, 0, -1)
     @indices = [0,1,0,2,0,3]
     
-#new BattleZone()
+class Tester
+  constructor: ->
+    renderer = new Renderer()
+    i = -2
+    while i < -1 
+      res = renderer.pipeline.transform new Vector3(1, 0, i)
+      if res.z > -1 and res.z < 1
+        alert res
+      i += 0.01
+        
+#new Tester()    
+
+$ -> new BattleZone()
     
