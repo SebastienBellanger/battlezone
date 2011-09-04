@@ -1,6 +1,6 @@
 class Renderer
-  @RED = '#F00'
-  @GREEN = '#0F0'
+  @RED = 'rgba(255,0,0,0.5)'
+  @GREEN = 'rgba(0,255,0,0.5)'
   @BLUE = '#00F'
   @WHITE = '#FFF'
   @BLACK = '#000'

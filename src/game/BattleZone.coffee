@@ -2,6 +2,7 @@ class BattleZone
   constructor: ->
     @renderer = new Renderer()
     @axisModel = new AxisModel()
+    @backgroundModel = new BackgroundModel()
     
     @scene = new Array()
     for i in [0...10]
@@ -76,7 +77,9 @@ class BattleZone
     @renderer.pipeline.viewMatrix.setTranslationV( @position.negate() )
     @renderer.pipeline.recalculateTransform()
      
-    #@axisModel.render @renderer 
+    #@axisModel.render @renderer
+    @backgroundModel.render @renderer
+    
     for sceneObject in @scene
       do (sceneObject) =>
         sceneObject.update step
