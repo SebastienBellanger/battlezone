@@ -78,7 +78,7 @@ class BattleZone
     @renderer.pipeline.recalculateTransform()
      
     #@axisModel.render @renderer
-    @backgroundModel.render @renderer
+    #@backgroundModel.render @renderer
     
     for sceneObject in @scene
       do (sceneObject) =>

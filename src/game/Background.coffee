@@ -8,7 +8,7 @@ class BackgroundModel extends Model
     @renderMode = "lines"
     
     r = 1000
-    o = 0 #r/2
+    o = r/2
     c = 0
     for a in [0...2*Math.PI] by 0.1
       @addVertex new Vector3(r*Math.cos(a) - o, 0, r*Math.sin(a) - o)
