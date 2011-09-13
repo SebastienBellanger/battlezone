@@ -24,38 +24,36 @@ class Matrix4
     @v[12] = 0; @v[13] = 0; @v[14] = 0; @v[15] = 1;
     
   mul: (matrix) ->
-    result = new Matrix4();
-    for c in [0...4]
-      do (c) =>
-        for r in [0...4]
-          do (r) =>
-            result.v[r + 4 * c] = 0
-            for i in [0...4]
-              do (i) =>
-                result.v[r + 4 * c] += @v[r + 4 * i] * matrix.v[i + 4 * c]
-    return result;
+    result = new Matrix4()
+
+    for i in [0...16] by 4
+      for j in [0...4]
+        result.v[i+j] = 0
+        for k in [0...4]
+          result.v[i+j] += @v[i+k] * matrix.v[k*4+j]
+    return result
              
   setTranslation: (x, y, z) ->
     @identity();
-    @v[12] = x;
-    @v[13] = y;
-    @v[14] = z;
+    @v[3] = x;
+    @v[7] = y;
+    @v[11] = z;
     
   setTranslationV: (vector3) ->
     @identity()
-    @v[12] = vector3.x
-    @v[13] = vector3.y
-    @v[14] = vector3.z
+    @v[3] = vector3.x
+    @v[7] = vector3.y
+    @v[11] = vector3.z
     
   translate: (x, y, z) ->
-    @v[12] += x;
-    @v[13] += y;
-    @v[14] += z;
+    @v[3] += x;
+    @v[7] += y;
+    @v[11] += z;
     
   translateV: (vector3) ->
-    @v[12] += vector3.x
-    @v[13] += vector3.y
-    @v[14] += vector3.z
+    @v[3] += vector3.x
+    @v[7] += vector3.y
+    @v[11] += vector3.z
     
   setScaling: (x, y, z) ->
     @identity();
@@ -66,9 +64,10 @@ class Matrix4
     @scale(vector3.x, vector3.y, vector3.z)
     
   scale: (x, y, z) ->
-    @v[0] *= x;
-    @v[5] *= y;
-    @v[10] *= z;
+    for c in [0...3]
+      @v[c*4+1] *= x;
+      @v[c*4+1] *= y;
+      @v[c*4+1] *= z;
     
   scaleV: (vector3) ->
     @scale(vector3.x, vector3.y, vector3.z)    
@@ -78,10 +77,10 @@ class Matrix4
     
   transform: (vector) ->
     return new Vector4(
-      vector.x * @v[0] + vector.y * @v[4] + vector.z * @v[ 8] + vector.w * @v[12],
-      vector.x * @v[1] + vector.y * @v[5] + vector.z * @v[ 9] + vector.w * @v[13],
-      vector.x * @v[2] + vector.y * @v[6] + vector.z * @v[10] + vector.w * @v[14],
-      vector.x * @v[3] + vector.y * @v[7] + vector.z * @v[11] + vector.w * @v[15]
+      vector.x * @v[0] + vector.y * @v[1] + vector.z * @v[ 2] + vector.w * @v[3],
+      vector.x * @v[4] + vector.y * @v[5] + vector.z * @v[ 6] + vector.w * @v[7],
+      vector.x * @v[8] + vector.y * @v[9] + vector.z * @v[10] + vector.w * @v[11],
+      vector.x * @v[12] + vector.y * @v[13] + vector.z * @v[14] + vector.w * @v[15]
     )    
     
   toString: ->

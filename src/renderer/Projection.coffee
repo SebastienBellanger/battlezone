@@ -26,8 +26,8 @@ class Projection
       @matrix.set(
         A, 0, 0,  0,
         0, F, 0,  0,
-        0, 0, K, -1,
-        0, 0, L,  0
+        0, 0, K,  L,
+        0, 0, -1, 0
       )
       
       @matrixUpdated = false

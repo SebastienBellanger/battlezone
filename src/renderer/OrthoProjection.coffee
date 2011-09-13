@@ -7,19 +7,18 @@ class OrthoProjection
     
   getMatrix: ->
     if @matrixUpdated
-      w = @right - @left  
-      h = @top - @bottom
-      p = @far - @near
-
-      x = ( @right + @left ) / w
-      y = ( @top + @bottom ) / h
-      z = ( @far + @near ) / p
+      
+      # symmetric ortho projection calc
+      A = 1 / @right
+      B = 1 / @top
+      C = -2 / (@far - @near)
+      D = - ((@far + @near) / (@far - @near))
       
       @matrix.set(
-        2/w, 0,   0,    -x,
-        0,   2/h, 0,    -y,
-        0,   0,   -2/p, -z,
-        0,   0,   0,    1
+        A, 0, 0, 0,
+        0, B, 0, 0,
+        0, 0, C, D,
+        0, 0, 0, 1
       )
       
       @matrixUpdated = false
