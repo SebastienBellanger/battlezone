@@ -36,3 +36,5 @@ class Pipeline
     vector3Proj = vector4Proj.toVector3()
     vector3View = @viewportMatrix.transform vector3Proj
     return vector3View
+    
+exports?.Pipeline = Pipeline

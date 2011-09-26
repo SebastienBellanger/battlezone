@@ -65,16 +65,16 @@ class BattleZone
     if @moveDown then @position.addThis Vector3.UNITY.mul -step * 0.02
     if @shoot
       bullet = new Bullet()
-      bullet.transform.setTranslation(@position)
+      bullet.transform.setTranslation @position
       @scene.push bullet
       @shoot = false
       
-           
     @renderer.clear()
     
     #@renderer.drawText( 10, 100, @position.negate() )
     
-    @renderer.pipeline.viewMatrix.setTranslationV( @position.negate() )
+    # TODO: explain why negate is used. the scene objects seem to be in -z?
+    @renderer.pipeline.viewMatrix.setTranslationV @position.negate()
     @renderer.pipeline.recalculateTransform()
      
     #@axisModel.render @renderer

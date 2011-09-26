@@ -15,7 +15,7 @@ class Projection
     
   getMatrix: ->
     if @matrixUpdated
-      # Projection for a symetric view volume
+      # Projection for a symmetric view volume
       aspect = @viewHeight / @viewWidth
       farNearInv = 1.0 / (@far - @near)
       A = 1.0 / Math.tan( 0.5 * @fov * Math.PI / 360.0 )
@@ -33,3 +33,5 @@ class Projection
       @matrixUpdated = false
     
     return @matrix
+    
+exports?.Projection = Projection

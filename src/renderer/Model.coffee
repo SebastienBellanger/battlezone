@@ -26,8 +26,10 @@ class Model
   renderPoints: (renderer) ->
     for point in @indices
       do (point) =>
+        #console.log 'renderPoints point ' + @vertices[point]
         position = renderer.pipeline.transform @vertices[point]
         #if position.z < -1 or position.z > 1 then continue
+        #console.log 'renderPoints position ' + position
         renderer.drawPixel position.x, position.y, @color
         
   renderLines: (renderer) ->
@@ -37,8 +39,10 @@ class Model
       currentLine = line
       line += 2
       p1 = renderer.pipeline.transform @vertices[@indices[currentLine]]
-      #if p1.z < 0 or p1.z > 1 then continue
+      if p1.z < 0 or p1.z > 1 then continue
       p2 = renderer.pipeline.transform @vertices[@indices[currentLine + 1]]
-      #if p2.z < 0 && p2.z > 1 then continue
+      if p2.z < 0 && p2.z > 1 then continue
+      #console.log 'renderLines ' + p1.x + ', ' + p1.y + ', ' + p2.x + ', ' + p2.y
       renderer.drawLine p1.x, p1.y, p2.x, p2.y, @color
-     
+
+exports?.Model = Model
