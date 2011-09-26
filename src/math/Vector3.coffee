@@ -78,3 +78,5 @@ class Vector3
     
   toString: ->
     return "Vector3 [#{@x},#{@y},#{@z}]"
+    
+exports?.Vector3 = Vector3
