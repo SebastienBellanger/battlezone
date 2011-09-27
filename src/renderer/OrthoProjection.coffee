@@ -24,3 +24,5 @@ class OrthoProjection
       @matrixUpdated = false
     
     return @matrix
+
+exports?.OrthoProjection = OrthoProjection
