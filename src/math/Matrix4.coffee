@@ -57,23 +57,22 @@ class Matrix4
     
   setScaling: (x, y, z) ->
     @identity();
-    @scale(x, y, z);
+    @scale(x, y, z)
     
   setScalingV: (vector3) ->
     @identity()
     @scale(vector3.x, vector3.y, vector3.z)
     
   scale: (x, y, z) ->
-    for c in [0...3]
-      @v[c*4+1] *= x;
-      @v[c*4+1] *= y;
-      @v[c*4+1] *= z;
+    @v[0] *= x
+    @v[5] *= y
+    @v[10] *= z
     
   scaleV: (vector3) ->
     @scale(vector3.x, vector3.y, vector3.z)    
   
   scaleUniform: (scalar) ->
-    @scale(scalar, scalar, scalar);    
+    @scale(scalar, scalar, scalar) 
     
   transform: (vector) ->
     return new Vector4(

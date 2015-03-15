@@ -71,7 +71,7 @@ class BattleZone
       
     @renderer.clear()
     
-    #@renderer.drawText( 10, 100, @position.negate() )
+    @renderer.drawText( 10, 20, @position.negate() )
     
     # TODO: explain why negate is used. the scene objects seem to be in -z?
     @renderer.pipeline.viewMatrix.setTranslationV @position.negate()

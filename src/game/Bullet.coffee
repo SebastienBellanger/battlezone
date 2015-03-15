@@ -2,7 +2,7 @@ class Bullet
   constructor: ->
     @bullet = new BulletModel()
     @transform = new Transform()
-    @transform.setUniformScale( 0.5 )
+    @transform.setUniformScale 0.5
     
   update: (step) ->
     @transform.translateZ -step * 0.05  

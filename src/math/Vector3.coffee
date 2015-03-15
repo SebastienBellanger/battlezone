@@ -77,6 +77,6 @@ class Vector3
     )
     
   toString: ->
-    return "Vector3 [#{@x},#{@y},#{@z}]"
+    return "Vector3 [#{@x.toFixed(2)},#{@y.toFixed(2)},#{@z.toFixed(2)}]"
     
 exports?.Vector3 = Vector3

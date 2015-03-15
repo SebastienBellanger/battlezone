@@ -76,15 +76,24 @@ class Transform
   setUniformScale: (scalar) ->
     @scaling.set(scalar, scalar, scalar) 
     
-  setScaling: (vector3) ->
+  setScale: (vector3) ->
     @scaling = vector3
-    
+
+  setScaleX: (scalar) ->
+    @scaling.x = scalar
+  
+  setScaleY: (scalar) ->
+    @scaling.y = scalar
+
+  setScaleZ: (scalar) ->
+    @scaling.z = scalar 
+
   getMatrix: ->
     translation = new Matrix4()
     translation.setTranslationV(@translation)
     
     rotation = @rotation.toMatrix()
-    
+
     scaling = new Matrix4()
     scaling.setScalingV(@scaling)
     
