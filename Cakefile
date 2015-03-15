@@ -23,6 +23,9 @@ task 'build', 'Build single application file from source files', ->
     process appContents
   
   process = (appContents) ->
+    fs.exists 'lib', (exists) ->
+      if not exists
+        fs.mkdir 'lib'
     fs.writeFile 'lib/battlezone.coffee', appContents.join('\n\n'), 'utf8', (err) ->
       if err
         console.log "Error while writing lib/battlezone.coffe"
