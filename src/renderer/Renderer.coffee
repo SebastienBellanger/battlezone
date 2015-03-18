@@ -68,4 +68,31 @@ class Renderer
     @context.stroke()
     @context.restore()
 
+  renderModel: (model) ->
+    switch model.renderMode
+      when "points" then @renderPoints(model)
+      when "lines" then @renderLines(model)
+
+  renderPoints: (model) ->
+    for point in model.indices
+      do (point) =>
+        #console.log 'renderPoints point ' + @vertices[point]
+        position = @pipeline.transform model.vertices[point]
+        #if position.z < -1 or position.z > 1 then continue
+        #console.log 'renderPoints position ' + position
+        @drawPixel position.x, position.y, model.color
+        
+  renderLines: (model) ->
+    count = model.indices.length
+    line = 0
+    while line < count
+      currentLine = line
+      line += 2
+      p1 = @pipeline.transform model.vertices[model.indices[currentLine]]
+      if p1.z < 0 or p1.z > 1 then continue
+      p2 = @pipeline.transform model.vertices[model.indices[currentLine + 1]]
+      if p2.z < 0 or p2.z > 1 then continue
+      #console.log 'renderLines ' + p1.x + ', ' + p1.y + ', ' + p2.x + ', ' + p2.y
+      @drawLine p1.x, p1.y, p2.x, p2.y, model.color
+
 exports?.Renderer = Renderer

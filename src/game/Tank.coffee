@@ -1,21 +1,13 @@
-class Tank
+class TankNode extends Node
   constructor: ->
-    @radar = new TankRadarModel()
-    @body = new TankBodyModel()
-    @transform = new Transform()
-    @radar.transform.translate(new Vector3(0,4,1))
-    
-  update: (step) ->
-    @radar.transform.rotateY( step * 0.005 )
-    
-  render: (renderer) ->
-    renderer.pipeline.push()
-    renderer.pipeline.addTransform @transform.getMatrix()
-    @radar.render renderer
-    @body.render renderer
-    renderer.pipeline.pop()
-    
-    
+    super new TankBodyModel
+    @radarNode = new Node(new TankRadarModel)
+    @radarNode.transform.translate(new Vector3(0,4,1))
+    @addChild(@radarNode)
+
+  onUpdate: (step) ->
+    @radarNode.transform.rotateY( step * 0.005 )
+
 class TankRadarModel extends Model
   constructor: ->
     super

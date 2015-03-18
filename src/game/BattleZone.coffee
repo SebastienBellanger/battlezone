@@ -1,18 +1,22 @@
 class BattleZone
   constructor: ->
     @renderer = new Renderer()
-    @axisModel = new AxisModel()
-    @backgroundModel = new BackgroundModel()
+    @rootNode = new Node()
+    @rotation = 0    
     
-    @scene = new Array()
+    @rootNode.addChild(new Node(new BackgroundHorizonModel))
+    @rootNode.addChild(new Node(new BackgroundMountainsModel))
+
     for i in [0...10]
-      tank = new Tank()
+      tank = new TankNode()
       tank.transform.translateX( Math.floor( Math.random() * 200 ) - 100 )
       tank.transform.translateZ( -Math.floor( Math.random() * 200 ) )
       tank.transform.rotateY( Math.random() * Math.PI )
-      @scene.push tank
-    @scene.push new Tank()    
- 
+      @rootNode.addChild(tank)
+    
+    @rootNode.addChild(new TankNode)
+    @rootNode.addChild(new Node(new AxisModel))
+
     @position = new Vector3(0, 5, 30)
         
     @moveForward = false
@@ -57,16 +61,18 @@ class BattleZone
     step = now - @last
     @last = now
     
-    if @moveLeft then @position.addThis Vector3.UNITX.mul -step * 0.02
-    if @moveRight then @position.addThis Vector3.UNITX.mul step * 0.02
+    #if @moveLeft then @position.addThis Vector3.UNITX.mul -step * 0.02
+    #if @moveRight then @position.addThis Vector3.UNITX.mul step * 0.02
+    if @moveLeft then @rotation += -step * 0.002
+    if @moveRight then @rotation += step * 0.002
     if @moveForward then @position.addThis Vector3.UNITZ.mul -step * 0.02
     if @moveBackward then @position.addThis Vector3.UNITZ.mul step * 0.02
     if @moveUp then @position.addThis Vector3.UNITY.mul step * 0.02
     if @moveDown then @position.addThis Vector3.UNITY.mul -step * 0.02
     if @shoot
-      bullet = new Bullet()
+      bullet = new BulletNode()
       bullet.transform.setTranslation @position
-      @scene.push bullet
+      @rootNode.addChild(bullet)
       @shoot = false
       
     @renderer.clear()
@@ -76,16 +82,13 @@ class BattleZone
     # TODO: explain why negate is used. the scene objects seem to be in -z?
     @renderer.pipeline.viewMatrix.setTranslationV @position.negate()
     @renderer.pipeline.recalculateTransform()
-     
-    #@axisModel.render @renderer
-    #@backgroundModel.render @renderer
-    
-    for sceneObject in @scene
-      do (sceneObject) =>
-        sceneObject.update step
-        #sceneObject.transform.RotateY step * 0.022
-        sceneObject.render @renderer    
+
+    @renderer.pipeline.addTransform Quaternion.fromAxisAngle(Vector3.UNITY, @rotation).toMatrix()
       
+
+    @rootNode.update step
+    @rootNode.render @renderer
+
     return true
 
 class AxisModel extends Model

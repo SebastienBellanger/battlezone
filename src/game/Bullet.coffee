@@ -1,18 +1,10 @@
-class Bullet
+class BulletNode extends Node
   constructor: ->
-    @bullet = new BulletModel()
-    @transform = new Transform()
+    super new BulletModel
     @transform.setUniformScale 0.5
     
-  update: (step) ->
+  onUpdate: (step) ->
     @transform.translateZ -step * 0.05  
-    
-  render: (renderer) ->
-    renderer.pipeline.push()
-    renderer.pipeline.addTransform @transform.getMatrix()
-    @bullet.render renderer
-    
-    renderer.pipeline.pop()
   
 class BulletModel extends Model
   constructor: ->
