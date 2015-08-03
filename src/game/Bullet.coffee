@@ -1,10 +1,11 @@
 class BulletNode extends Node
-  constructor: ->
+  constructor: (@direction) ->
     super new BulletModel
     @transform.setUniformScale 0.5
     
   onUpdate: (step) ->
-    @transform.translateZ -step * 0.05  
+    move_step = step * 30 
+    @transform.translate @direction.mul move_step
   
 class BulletModel extends Model
   constructor: ->

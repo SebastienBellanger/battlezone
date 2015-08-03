@@ -6,7 +6,7 @@ class TankNode extends Node
     @addChild(@radarNode)
 
   onUpdate: (step) ->
-    @radarNode.transform.rotateY( step * 0.005 )
+    @radarNode.transform.rotateY( step * 5 )
 
 class TankRadarModel extends Model
   constructor: ->
