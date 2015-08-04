@@ -44,10 +44,10 @@ class Vector3
     @y /= scalar;
     @z /= scalar;
     
-  negate: ->
+  invert: ->
     return new Vector3( -@x, -@y, -@z )
     
-  negateThis: ->
+  invertThis: ->
     @x = -@x
     @y = -@y
     @z = -@z

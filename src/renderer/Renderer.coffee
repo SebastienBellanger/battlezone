@@ -15,13 +15,13 @@ class Renderer
     @width = @canvas?.width() || 1
     @height = @canvas?.height() || 1
     
-    projection = new Projection(@width, @height, 1, 1000, 80.0)
+    projection = new Projection(@width, @height, 0.00001, 1000, 75.0)
     #projection = new OrthoProjection(0, @width, @height, 0, 1, 1000)
     viewMatrix = new Matrix4()
     
     # TODO: explain purpose of this translation, commented for now since it does not seem to have effect.
     #viewMatrix.translate(0, -4, -10)
-
+    
     halfWidth = @width / 2
     halfHeight = @height / 2
     
