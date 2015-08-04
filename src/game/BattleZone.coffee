@@ -4,12 +4,13 @@ class BattleZone
 
   constructor: ->
     @renderer = new Renderer()
+    @hud = new Hud()
     @rootNode = new Node()
     @skyboxNode = new Node()
     @sceneNode = new Node()
     @cameraRotationNode = new Node()
     @cameraTranslationNode = new Node()
-    @position = new Vector3(0, 5, 30)
+    @position = new Vector3(0, 3, 30)
     @rotation = 0    
 
     @cameraTranslationNode.addChild(@sceneNode)
@@ -101,7 +102,7 @@ class BattleZone
     @renderer.clear()
 
     @renderer.drawText( 10, 20, @position )
-    
+
     rotationQuat = Quaternion.fromAxisAngle(Vector3.UNITY, @rotation)
 
     # position indicates where the camera is, but instead of moving the camera we move the whole scene 
@@ -114,6 +115,8 @@ class BattleZone
 
     @rootNode.update step
     @rootNode.render @renderer
+
+    @hud.render @renderer
 
     return true
 

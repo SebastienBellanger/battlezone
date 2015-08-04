@@ -4,7 +4,7 @@ class BulletNode extends Node
     @transform.setUniformScale 0.5
     
   onUpdate: (step) ->
-    move_step = step * 30 
+    move_step = step * 60 
     @transform.translate @direction.mul move_step
   
 class BulletModel extends Model
