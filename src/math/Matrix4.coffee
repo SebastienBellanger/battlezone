@@ -80,7 +80,11 @@ class Matrix4
       vector.x * @v[4] + vector.y * @v[5] + vector.z * @v[ 6] + vector.w * @v[7],
       vector.x * @v[8] + vector.y * @v[9] + vector.z * @v[10] + vector.w * @v[11],
       vector.x * @v[12] + vector.y * @v[13] + vector.z * @v[14] + vector.w * @v[15]
-    )    
+    )
+
+  transformVector3: (vector3) ->
+    transformedVector = @transform Vector4.fromVector3 vector3, 1
+    return transformedVector.toVector3()
     
   toString: ->
     return "Matrix4 [#{@v[0]},#{@v[1]},#{@v[2]},#{@v[3]},#{@v[4]},#{@v[5]},#{@v[6]},#{@v[7]},#{@v[8]},#{@v[9]},#{@v[10]},#{@v[11]},#{@v[12]},#{@v[13]},#{@v[14]},#{@v[15]}]"

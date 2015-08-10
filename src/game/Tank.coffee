@@ -1,3 +1,5 @@
+GRAVITY = new Vector3(0, -4, 0)
+
 class TankNode extends Node
   constructor: ->
     super new TankBodyModel
@@ -5,8 +7,55 @@ class TankNode extends Node
     @radarNode.transform.translate(new Vector3(0,4,1))
     @addChild(@radarNode)
 
+    #@testNode = new Node(Models.Sphere)
+    #@testNode.transform.setUniformScale(3.5)
+    #@testNode.transform.translate(new Vector3(0,2,0))
+    #@addChild(@testNode)
+
   onUpdate: (step) ->
     @radarNode.transform.rotateY( step * 5 )
+
+  onRemove: ->
+    if @parent != null
+      chunk = new TankChunkNode Models.Chunk
+      chunk.transform.setTranslation(@transform.translation)
+      chunk.transform.translate(new Vector3(0,2,0))
+      @parent.addChild(chunk)
+
+      chunk = new TankChunkNode Models.BarrelChunk
+      chunk.transform.setTranslation(@transform.translation)
+      chunk.transform.translate(new Vector3(0,3,3))
+      @parent.addChild(chunk)
+
+      chunk = new TankChunkNode Models.BodyChunk
+      chunk.transform.setTranslation(@transform.translation)
+      chunk.transform.translate(new Vector3(0,1,0))
+      @parent.addChild(chunk)
+
+      chunk = new TankChunkNode new TankRadarModel
+      chunk.transform.setTranslation(@transform.translation)
+      chunk.transform.translate(new Vector3(0,4,1))
+      @parent.addChild(chunk)
+
+
+class TankChunkNode extends Node
+  constructor: (model) ->
+    super model
+    @velocity = new Vector3(Math.random() * 6.0 - 3, Math.random() * 2 + 5, Math.random() * 6.0 - 3)
+    @rotationX = Math.random() * 10.0 - 5.0
+    @rotationY = Math.random() * 10.0 - 5.0
+    @rotationZ = Math.random() * 10.0 - 5.0
+
+  onUpdate: (step) ->
+    @transform.rotateX( step * @rotationX )
+    @transform.rotateY( step * @rotationY )
+    @transform.rotateZ( step * @rotationZ )
+
+    @velocity.addThis GRAVITY.mul step
+    @transform.translate @velocity.mul step
+
+    if @transform.translation.y <= 0.0
+      @remove()
 
 class TankRadarModel extends Model
   constructor: ->
