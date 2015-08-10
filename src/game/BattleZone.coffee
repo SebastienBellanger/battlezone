@@ -1,6 +1,9 @@
 class BattleZone
   @MOVESPEED = 20
-  @ROTATIONSPEED = 1
+  @ROTATIONSPEED = 0.7
+
+  @TANKCOLLIDER = new Sphere(new Vector3(0,2,0), 3.5)
+  @BULLETCOLLIDER = new Sphere(new Vector3(0, 0, 0), 1.0)
 
   constructor: ->
     @renderer = new Renderer()
@@ -22,15 +25,21 @@ class BattleZone
     @skyboxNode.addChild(new Node(new BackgroundHorizonModel))
     @skyboxNode.addChild(new Node(new BackgroundMountainsModel))
 
+    @tanks = new Array()
+    @bullets = new Array()
+
     for i in [0...10]
       tank = new TankNode()
       tank.transform.translateX( Math.floor( Math.random() * 200 ) - 100 )
       tank.transform.translateZ( -Math.floor( Math.random() * 200 ) )
       tank.transform.rotateY( Math.random() * Math.PI )
       @sceneNode.addChild(tank)
+      @tanks.push tank
     
-    @sceneNode.addChild(new TankNode)
+    @mainTank = new TankNode
+    @sceneNode.addChild(@mainTank)
     @sceneNode.addChild(new Node(new AxisModel))
+    @tanks.push @mainTank
 
     @moveForward = false
     @moveBackward = false
@@ -97,6 +106,7 @@ class BattleZone
       bullet.transform.setTranslation @position
       bullet.transform.rotateY(-@rotation)
       @sceneNode.addChild(bullet)
+      @bullets.push bullet
       @shoot = false
       
     @renderer.clear()
@@ -117,6 +127,22 @@ class BattleZone
     @rootNode.render @renderer
 
     @hud.render @renderer
+
+    #bullet collision test
+    for bullet in @bullets
+      bulletColliderPosition = bullet.getWorldTransform().transformVector3 BattleZone.BULLETCOLLIDER.position
+      bulletCollider = new Sphere(bulletColliderPosition, BattleZone.BULLETCOLLIDER.radius)
+      for tank in @tanks
+        tankColliderPosition = tank.getWorldTransform().transformVector3 BattleZone.TANKCOLLIDER.position
+        tankCollider = new Sphere(tankColliderPosition, BattleZone.TANKCOLLIDER.radius)
+        if bulletCollider.intersects(tankCollider)
+          console.log "hit!"
+          @tanks = (x for x in @tanks when x != tank)
+          tank.remove()
+
+          @bullets = (x for x in @bullets when x != bullet)
+          bullet.remove()
+    
 
     return true
 

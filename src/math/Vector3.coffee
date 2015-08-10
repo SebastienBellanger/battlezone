@@ -53,7 +53,7 @@ class Vector3
     @z = -@z
     
   lengthSquared: ->
-    return dot(this);
+    return @dot(this);
     
   length: ->
     return Math.sqrt( lengthSquared() );
@@ -67,7 +67,7 @@ class Vector3
     return vector.normalizeThis();
     
   dot: (vector) ->
-    return @x * vector.x + @y * vector.y + @z * vectory.z;
+    return @x * vector.x + @y * vector.y + @z * vector.z;
     
   cross: (vector) ->
     return new Vector3( 
