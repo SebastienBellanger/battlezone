@@ -1,11 +1,20 @@
 GRAVITY = new Vector3(0, -4, 0)
+MOVESPEED = 0.2
+ROTATIONSPEED = 0.3
 
 class TankNode extends Node
   constructor: ->
     super new TankBodyModel
-    @radarNode = new Node(new TankRadarModel)
+    @radarNode = new Node(Models.TankRadar)
     @radarNode.transform.translate(new Vector3(0,4,1))
+    @radarNode.transform.setUniformScale(0.6)
     @addChild(@radarNode)
+
+    @trankRotation = Math.random() * Math.PI * 2
+    @transform.setRotation(Quaternion.fromAxisAngle(Vector3.UNITY, @trankRotation))
+
+    @stateTimer = Math.random() * 2 + 1
+    @rotate = Math.random() * ROTATIONSPEED * 2 - ROTATIONSPEED
 
     #@testNode = new Node(Models.Sphere)
     #@testNode.transform.setUniformScale(3.5)
@@ -13,38 +22,61 @@ class TankNode extends Node
     #@addChild(@testNode)
 
   onUpdate: (step) ->
-    @radarNode.transform.rotateY( step * 5 )
+    @radarNode.transform.rotateY( step * 1 )
+
+    moveTranslation = new Vector3(-Math.sin(@trankRotation) * MOVESPEED, 0.0, -Math.cos(@trankRotation) * MOVESPEED)
+    @transform.translate(moveTranslation)
+
+    @stateTimer -= step
+    if @stateTimer <= 0 
+      @stateTimer = Math.random() * 2 + 1
+      @rotate = Math.random() * ROTATIONSPEED * 2 - ROTATIONSPEED
+
+    @trankRotation += @rotate * step
+    @transform.setRotation(Quaternion.fromAxisAngle(Vector3.UNITY, @trankRotation))
 
   onRemove: ->
     if @parent != null
-      chunk = new TankChunkNode Models.Chunk
-      chunk.transform.setTranslation(@transform.translation)
-      chunk.transform.translate(new Vector3(0,2,0))
-      @parent.addChild(chunk)
+      root = new Node()
+      root.transform.setTranslation(@transform.translation)
+      root.transform.setRotation(Quaternion.fromAxisAngle(Vector3.UNITY, @trankRotation))
+      @parent.addChild(root)
 
-      chunk = new TankChunkNode Models.BarrelChunk
-      chunk.transform.setTranslation(@transform.translation)
-      chunk.transform.translate(new Vector3(0,3,3))
-      @parent.addChild(chunk)
+      chunk = new TankChunkNode Models.Chunk, 1.0
+      chunk.transform.setUniformScale(1.2)
+      chunk.transform.translate(new Vector3(0,2.5,0))
+      root.addChild(chunk)
 
-      chunk = new TankChunkNode Models.BodyChunk
-      chunk.transform.setTranslation(@transform.translation)
-      chunk.transform.translate(new Vector3(0,1,0))
-      @parent.addChild(chunk)
+      chunk = new TankChunkNode Models.BarrelChunk, 1.0
+      chunk.transform.setUniformScale(0.9)
+      chunk.transform.translate(new Vector3(0,3,-4))
+      root.addChild(chunk)
 
-      chunk = new TankChunkNode new TankRadarModel
-      chunk.transform.setTranslation(@transform.translation)
+      chunk = new TankChunkNode Models.BodyChunk, 0.5
+      chunk.transform.setUniformScale(1.8)
+      chunk.transform.translate(new Vector3(0,0,0))
+      root.addChild(chunk)
+
+      chunk = new TankChunkNode Models.TankRadar, 2.0
+      chunk.transform.setUniformScale(0.6)
       chunk.transform.translate(new Vector3(0,4,1))
-      @parent.addChild(chunk)
+      root.addChild(chunk)
 
 
 class TankChunkNode extends Node
-  constructor: (model) ->
+  constructor: (model, forceMultiplier = 1 ) ->
     super model
-    @velocity = new Vector3(Math.random() * 6.0 - 3, Math.random() * 2 + 5, Math.random() * 6.0 - 3)
-    @rotationX = Math.random() * 10.0 - 5.0
-    @rotationY = Math.random() * 10.0 - 5.0
-    @rotationZ = Math.random() * 10.0 - 5.0
+    @velocity = new Vector3(Math.random() * 4.0 - 2.0, Math.random() * 2 + 4, Math.random() * 4.0 - 2.0)
+    @rotationX = Math.random() * 5.0 - 2.5
+    @rotationY = Math.random() * 5.0 - 2.5
+    @rotationZ = Math.random() * 5.0 - 2.5
+
+    @velocity.x *= forceMultiplier
+    @velocity.y += @velocity.y * (forceMultiplier - 1) * 0.25
+    @velocity.z *= forceMultiplier
+    @rotationX *= forceMultiplier
+    @rotationY *= forceMultiplier
+    @rotationZ *= forceMultiplier
 
   onUpdate: (step) ->
     @transform.rotateX( step * @rotationX )
@@ -54,7 +86,7 @@ class TankChunkNode extends Node
     @velocity.addThis GRAVITY.mul step
     @transform.translate @velocity.mul step
 
-    if @transform.translation.y <= 0.0
+    if @transform.translation.y <= -1.0
       @remove()
 
 class TankRadarModel extends Model

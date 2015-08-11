@@ -28,11 +28,10 @@ class BattleZone
     @tanks = new Array()
     @bullets = new Array()
 
-    for i in [0...10]
+    for i in [0...100]
       tank = new TankNode()
-      tank.transform.translateX( Math.floor( Math.random() * 200 ) - 100 )
-      tank.transform.translateZ( -Math.floor( Math.random() * 200 ) )
-      tank.transform.rotateY( Math.random() * Math.PI )
+      tank.transform.translateX( Math.floor( Math.random() * 600 ) - 300 )
+      tank.transform.translateZ( Math.floor( Math.random() * 600 ) - 300 )
       @sceneNode.addChild(tank)
       @tanks.push tank
     
@@ -123,7 +122,7 @@ class BattleZone
     # Skybox is only rotated and not moved to always stay at the same distance from the camera
     @skyboxNode.transform.setRotation rotationQuat
 
-    @rootNode.update step
+    @rootNode.update step 
     @rootNode.render @renderer
 
     @hud.render @renderer
