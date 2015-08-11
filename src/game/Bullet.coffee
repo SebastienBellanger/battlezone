@@ -1,11 +1,15 @@
 class BulletNode extends Node
   constructor: (@direction) ->
     super new BulletModel
-    @transform.setUniformScale 0.5
+    @transform.setUniformScale 0.8
+    @timeOut = 4.0
     
   onUpdate: (step) ->
-    move_step = step * 60 
+    move_step = step * 100 
     @transform.translate @direction.mul move_step
+    @timeOut -= step
+    if @timeOut <= 0
+      @remove()
   
 class BulletModel extends Model
   constructor: ->
