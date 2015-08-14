@@ -28,7 +28,7 @@ class BattleZone
     @tanks = new Array()
     @bullets = new Array()
 
-    for i in [0...100]
+    for i in [0...20]
       tank = new TankNode()
       tank.transform.translateX( Math.floor( Math.random() * 600 ) - 300 )
       tank.transform.translateZ( Math.floor( Math.random() * 600 ) - 300 )
