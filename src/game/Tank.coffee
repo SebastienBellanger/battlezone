@@ -4,10 +4,12 @@ ROTATIONSPEED = 0.3
 
 class TankNode extends Node
   constructor: ->
-    super new TankBodyModel
+    super Models.TankModel    
+    @transform.setUniformScale(1.5)
+    
     @radarNode = new Node(Models.TankRadar)
-    @radarNode.transform.translate(new Vector3(0,4,1))
-    @radarNode.transform.setUniformScale(0.6)
+    @radarNode.transform.translate(new Vector3(0,2.3, 1.4))
+    @radarNode.transform.setUniformScale(0.4)
     @addChild(@radarNode)
 
     @trankRotation = Math.random() * Math.PI * 2
@@ -58,7 +60,7 @@ class TankNode extends Node
       root.addChild(chunk)
 
       chunk = new TankChunkNode Models.TankRadar, 2.0
-      chunk.transform.setUniformScale(0.6)
+      chunk.transform.setUniformScale(0.4)
       chunk.transform.translate(new Vector3(0,4,1))
       root.addChild(chunk)
 
