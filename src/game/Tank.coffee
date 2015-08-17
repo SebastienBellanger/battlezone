@@ -8,7 +8,7 @@ class TankNode extends Node
     @transform.setUniformScale(1.5)
     
     @radarNode = new Node(Models.TankRadar)
-    @radarNode.transform.translate(new Vector3(0,2.3, 1.4))
+    @radarNode.transform.translate(new Vector3(0,2.9, 1.6))
     @radarNode.transform.setUniformScale(0.4)
     @addChild(@radarNode)
 
@@ -18,7 +18,7 @@ class TankNode extends Node
     @stateTimer = Math.random() * 2 + 1
     @rotate = Math.random() * ROTATIONSPEED * 2 - ROTATIONSPEED
 
-    #@testNode = new Node(Models.Sphere)
+    #@testNode = new Node(Models.Sphere)    
     #@testNode.transform.setUniformScale(3.5)
     #@testNode.transform.translate(new Vector3(0,2,0))
     #@addChild(@testNode)
