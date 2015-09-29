@@ -1,9 +1,4 @@
 class Renderer
-  @RED = 'rgba(255,0,0,0.5)'
-  @GREEN = 'rgba(0,255,0,0.5)'
-  @BLUE = '#00F'
-  @WHITE = '#FFF'
-  @BLACK = '#000'
 
   constructor: ->
     @canvas = $?('#canvas')
@@ -44,7 +39,7 @@ class Renderer
     if not @context? then return
   
     @context.save()
-    @context.fillStyle = color
+    @context.fillStyle = color.getColorString()
     @context.fillRect(x-1,y-1,3,3)  
     @context.restore()
   
@@ -52,8 +47,8 @@ class Renderer
     if not @context? then return
   
     @context.save()
-    if not color? then color = Renderer.WHITE
-    @context.fillStyle = color
+    if not color? then color = Color.WHITE
+    @context.fillStyle = color.getColorString()
     @context.fillText string, x, y
     @context.restore()
     
@@ -62,7 +57,7 @@ class Renderer
   
     @context.save();
     @context.beginPath()
-    @context.strokeStyle = color
+    @context.strokeStyle = color.getColorString()
     @context.moveTo fromX, fromY
     @context.lineTo toX, toY
     @context.stroke()

@@ -94,7 +94,7 @@ class TankChunkNode extends Node
 class TankRadarModel extends Model
   constructor: ->
     super
-    @color = Renderer.RED
+    @color = Color.RED
     @renderMode = "lines"
     
     @addVertex(new Vector3(0,0,0))
@@ -109,7 +109,7 @@ class TankRadarModel extends Model
 class TankBodyModel extends Model
   constructor: ->
     super
-    @color = Renderer.GREEN
+    @color = Color.GREEN
     @renderMode = "lines"
     @addVertex(new Vector3(-3, 0, -5))
     @addVertex(new Vector3( 3, 0, -5))

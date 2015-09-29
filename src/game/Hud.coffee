@@ -9,7 +9,7 @@ class Hud
 		o_y = 40
 		o_w = 40
 
-		color = "red"
+		color = Color.RED
 
 		if @hasTarget 
 

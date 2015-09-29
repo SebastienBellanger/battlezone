@@ -4,7 +4,7 @@ class Model
     @indices = new Array()
     @transform = new Transform()
     @renderMode = "points"
-    @color = "rgb(255, 255, 255)"
+    @color = Color.WHITE
     
   addVertex: (vector3) ->
     @vertices.push vector3
