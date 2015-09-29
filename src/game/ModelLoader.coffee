@@ -32,8 +32,12 @@ class ModelLoader
 						model.addIndex(indexArray[j])
 					model.addIndex(indexArray[0])
 
-			else if words.length == 2 and words[0] == "color"
-				model.color = words[1]					
+			else if words.length == 5 and words[0] == "color"
+				r = parseFloat(words[1])
+				g = parseFloat(words[2])
+				b = parseFloat(words[3])
+				a = parseFloat(words[4])
+				model.color = new Color(r, g, b, a)				
 
 		return model
 

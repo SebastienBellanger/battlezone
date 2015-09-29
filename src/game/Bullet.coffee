@@ -14,7 +14,7 @@ class BulletNode extends Node
 class BulletModel extends Model
   constructor: ->
     super
-    @color = Renderer.RED
+    @color = Color.RED
     @renderMode = "lines"
     
     @addVertex new Vector3(1,1,1)

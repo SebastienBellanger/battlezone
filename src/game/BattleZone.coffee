@@ -8,6 +8,7 @@ class BattleZone
   constructor: ->
     @renderer = new Renderer()
     @hud = new Hud()
+    @hudMessages = new HudMessages()
     @rootNode = new Node()
     @skyboxNode = new Node()
     @sceneNode = new Node()
@@ -54,7 +55,7 @@ class BattleZone
     now = new Date().getTime()
     @last = now + 50
     @intervalID = setInterval @update, 50
-    
+
   onKeyUp: (key) =>
     key.preventDefault()
     switch key.keyCode
@@ -100,6 +101,7 @@ class BattleZone
     if @moveUp then @position.addThis Vector3.UNITY.mul step * BattleZone.MOVESPEED
     if @moveDown then @position.addThis Vector3.UNITY.mul -step * BattleZone.MOVESPEED
     if @shoot
+      @hudMessages.addMessage("bang!", Color.RED)
       direction = new Vector3(Math.sin(@rotation), 0, -Math.cos(@rotation))
       bullet = new BulletNode(direction)
       bullet.transform.setTranslation @position
@@ -126,6 +128,8 @@ class BattleZone
     @rootNode.render @renderer
 
     @hud.render @renderer
+    @hudMessages.update step
+    @hudMessages.render @renderer
 
     #bullet collision test
     for bullet in @bullets
@@ -135,7 +139,7 @@ class BattleZone
         tankColliderPosition = tank.getWorldTransform().transformVector3 BattleZone.TANKCOLLIDER.position
         tankCollider = new Sphere(tankColliderPosition, BattleZone.TANKCOLLIDER.radius)
         if bulletCollider.intersects(tankCollider)
-          console.log "hit!"
+          @hudMessages.addMessage("Enemy hit!", Color.GREEN)
           @tanks = (x for x in @tanks when x != tank)
           tank.remove()
 

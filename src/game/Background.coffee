@@ -4,7 +4,7 @@ class BackgroundMountainsModel extends Model
   constructor: ->
     super
     
-    @color = Renderer.BLUE
+    @color = Color.BLUE
     @renderMode = "lines"
     
     r = 400
@@ -25,7 +25,7 @@ class BackgroundHorizonModel extends Model
   constructor: ->
     super
     
-    @color = Renderer.BLUE
+    @color = Color.BLUE
     @renderMode = "lines"
     
     r = 400
